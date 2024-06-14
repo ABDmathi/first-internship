@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>To do List</title>
+    <style>
+        body {
+            background-image: url('pexels-ann-h-45017-15387085.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            font-family: "Quicksand", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400; 
+            font-style: normal;
+            color: #333; 
+            margin: ;
+            padding: 0;
+
+        }
+
+        .thebox {
+            width: 400px;
+            height: 400px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(7px);
+            position: relative;
+            margin-left: 35%;
+            margin-top: 10%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .fa-plus {
+            position: absolute;
+            top: 56px;
+            left: 175px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(7px);
+            border-radius: 50%;
+        }
+
+        .thebox input {
+            width: fit-content;
+            height: 27px;
+            margin-top: 30px;
+            margin-left: 30px;
+            border-radius: 4px;
+            border: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .thebox input:checked {
+            border: rgba(255, 255, 255, 0.1);
+        }
+
+        .thebox button {
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.3);
+            border: rgba(255, 255, 255, 0.1);
+        }
+
+        .task1 {
+            margin-top: 20px;
+            margin-left: 30px;
+        }
+
+        .task1 h4 {
+            background: rgba(255, 255, 255, 0.3);
+            border: rgba(255, 255, 255, 0.1);
+            margin: 5px 0;
+            width: fit-content;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .task1 h4::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border: 1px solid black;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .completed {
+            text-decoration: line-through;
+        }
+
+        .tasklist {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">
+        <p>Win Your Day With Us</p>
+    </div>
+    <div class="thebox">
+        <input type="text" maxlength="30" placeholder="add new task" class="fiput">
+        <i class="fa-solid fa-plus" onclick="addnewtask()"></i>
+        <button class="list">add to list</button>
+        <div class="task1"></div>
+    </div>
+
+    <script>
+        let todos = [];
+
+        window.onload = () => {
+            todos = JSON.parse(localStorage.getItem('tasks')) || [];
+            todos.forEach(todo => addtodo(todo));
+        }
+
+        let button = document.querySelector('.list');
+        button.addEventListener('click', () => {
+            let task = document.querySelector('.fiput').value.trim();
+            if (task === '') return; 
+            todos.push(task);
+            localStorage.setItem('tasks', JSON.stringify(todos));
+            addtodo(task);  
+            document.querySelector('.fiput').value = ''; 
+        })
+
+        function addtodo(task) { 
+            let tasklist = document.querySelector('.task1');  
+            let para = document.createElement('h4');
+            para.textContent = task;
+            tasklist.appendChild(para);
+            
+            para.addEventListener('click', () => {
+                para.classList.toggle('completed');
+                remove(task);
+            });
+
+            para.addEventListener('dblclick', () => {
+                tasklist.removeChild(para);
+                remove(task)
+            });
+        }
+
+        function remove(task) {
+            let index = todos.indexOf(task);
+            if (index > -1) {
+                todos.splice(index, 1);
+                localStorage.setItem('tasks', JSON.stringify(todos));
+            }
+        }
+        function addnewtask() {
+            document.querySelector('.fiput').focus();
+        }
+    </script>
+</body>
+</html>
+
+
+
+
